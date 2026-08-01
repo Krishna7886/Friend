@@ -402,10 +402,9 @@
       { id: 10, title: 'One in a Trillion', desc: 'There is nobody else like Soundarya in this entire universe, and calling you mine is Krishna’s life blessing!' }
     ];
 
-    // UPGRADED ATTRACTIVE ROMANTIC MUSIC PLAYER COMPONENT
-    function RomanticAudioPlayer({ songs, currentSongIndex, setCurrentSongIndex }) {
+    // UPGRADED ROMANTIC AUDIO PLAYER COMPONENT (AUTOMATIC PLAYBACK SUPPORT)
+    function RomanticAudioPlayer({ songs, currentSongIndex, setCurrentSongIndex, isPlaying, setIsPlaying }) {
       const audioRef = useRef(null);
-      const [isPlaying, setIsPlaying] = useState(false);
       const [progress, setProgress] = useState(0);
       const [duration, setDuration] = useState(0);
 
@@ -415,14 +414,24 @@
         url: 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=romantic-piano-112199.mp3'
       };
 
-      const togglePlay = () => {
+      // Handles Automatic Playback Reaction on state change
+      useEffect(() => {
         if (!audioRef.current) return;
+
         if (isPlaying) {
-          audioRef.current.pause();
-          setIsPlaying(false);
+          const playPromise = audioRef.current.play();
+          if (playPromise !== undefined) {
+            playPromise.catch(e => {
+              console.log('Audio playback permission note:', e);
+            });
+          }
         } else {
-          audioRef.current.play().then(() => setIsPlaying(true)).catch(e => console.log('Playback error:', e));
+          audioRef.current.pause();
         }
+      }, [isPlaying, currentSongIndex]);
+
+      const togglePlay = () => {
+        setIsPlaying(!isPlaying);
       };
 
       const handleTimeUpdate = () => {
@@ -451,12 +460,6 @@
         setCurrentSongIndex(prevIndex);
         setIsPlaying(true);
       };
-
-      useEffect(() => {
-        if (audioRef.current && isPlaying) {
-          audioRef.current.play().catch(e => console.log('Auto play note:', e));
-        }
-      }, [currentSongIndex]);
 
       const formatTime = (secs) => {
         if (isNaN(secs)) return '0:00';
@@ -543,6 +546,7 @@
     // MAIN REACT APP PORTAL
     function App() {
       const [isOpened, setIsOpened] = useState(false);
+      const [isPlaying, setIsPlaying] = useState(false); // Global Music Playback State
       const [activeTab, setActiveTab] = useState('gallery');
       const [selectedPhoto, setSelectedPhoto] = useState(null);
       const [flippedCards, setFlippedCards] = useState({});
@@ -751,8 +755,10 @@
         }
       }, []);
 
+      // AUTOMATIC SONG PLAYBACK ON UNWRAP SURPRISE CLICK
       const handleOpenSurprise = () => {
         setIsOpened(true);
+        setIsPlaying(true); // <--- Triggers song playback automatically!
         triggerLoveShower();
       };
 
@@ -850,7 +856,7 @@
                   For My Beloved Soundarya ❤️
                 </h1>
                 <p className="text-rose-200 mb-8 text-sm md:text-base leading-relaxed">
-                  Crafted with all my love by Krishna. Step inside to hear our songs, explore our memories, and ripple the water pond!
+                  Crafted with all my love by Krishna. Click below to unwrap your surprise and play our song!
                 </p>
                 <button
                   onClick={handleOpenSurprise}
@@ -983,12 +989,14 @@
                   "In you, Soundarya, Krishna found his best friend, his safest haven, and his favorite person in the whole universe."
                 </p>
 
-                {/* Upgraded Romantic Audio Player */}
+                {/* Upgraded Romantic Audio Player with Auto-Play */}
                 <div className="pt-2">
                   <RomanticAudioPlayer 
                     songs={songs} 
                     currentSongIndex={currentSongIndex}
                     setCurrentSongIndex={setCurrentSongIndex}
+                    isPlaying={isPlaying}
+                    setIsPlaying={setIsPlaying}
                   />
                 </div>
               </div>
@@ -1172,7 +1180,10 @@
                       songs.map((song, idx) => (
                         <div 
                           key={song.id}
-                          onClick={() => setCurrentSongIndex(idx)}
+                          onClick={() => {
+                            setCurrentSongIndex(idx);
+                            setIsPlaying(true);
+                          }}
                           className={`p-4 rounded-2xl cursor-pointer transition-all flex items-center justify-between border ${
                             currentSongIndex === idx 
                               ? 'bg-rose-600/80 border-rose-400 text-white shadow-lg' 
@@ -1180,7 +1191,7 @@
                           }`}
                         >
                           <div className="flex items-center gap-3">
-                            <span className="text-xl">{currentSongIndex === idx ? '🎶' : '🎵'}</span>
+                            <span className="text-xl">{currentSongIndex === idx && isPlaying ? '🎶' : '🎵'}</span>
                             <div>
                               <h5 className="font-bold text-sm md:text-base">{song.title}</h5>
                               <p className="text-xs text-rose-200/70">{song.artist}</p>
@@ -1188,7 +1199,7 @@
                           </div>
 
                           <span className="text-xs font-bold px-3 py-1 rounded-full bg-rose-900/60 border border-rose-500/30">
-                            {currentSongIndex === idx ? 'Playing ▶' : 'Play'}
+                            {currentSongIndex === idx && isPlaying ? 'Playing ▶' : 'Play'}
                           </span>
                         </div>
                       ))
