@@ -190,7 +190,6 @@
 
             const handlePointerMove = (e) => {
               const now = Date.now();
-              // Trigger ripple every 40ms during mouse movement for continuous liquid flow
               if (now - lastMoveTime > 40) {
                 lastMoveTime = now;
                 const clientX = e.clientX || (e.touches && e.touches[0] && e.touches[0].clientX);
@@ -214,13 +213,11 @@
               }
             };
 
-            // Global event listeners capture mouse movement anywhere on screen
             window.addEventListener('mousemove', handlePointerMove);
             window.addEventListener('touchmove', handlePointerMove);
             window.addEventListener('mousedown', handlePointerDown);
             window.addEventListener('touchstart', handlePointerDown);
 
-            // Ambient random raindrops in the background water pond
             const interval = setInterval(() => {
               if ($el && $el.ripples) {
                 const rx = Math.random() * window.innerWidth;
@@ -402,7 +399,17 @@
       { id: 10, title: 'One in a Trillion', desc: 'There is nobody else like Soundarya in this entire universe, and calling you mine is Krishna’s life blessing!' }
     ];
 
-    // UPGRADED ROMANTIC AUDIO PLAYER COMPONENT (AUTOMATIC PLAYBACK SUPPORT)
+    // RANDOM SONG SELECTOR HELPER FUNCTION
+    const getRandomSongIndex = (currentIndex, totalSongs) => {
+      if (totalSongs <= 1) return 0;
+      let nextIndex = currentIndex;
+      while (nextIndex === currentIndex) {
+        nextIndex = Math.floor(Math.random() * totalSongs);
+      }
+      return nextIndex;
+    };
+
+    // UPGRADED ROMANTIC AUDIO PLAYER COMPONENT (RANDOM SHUFFLE PLAYBACK)
     function RomanticAudioPlayer({ songs, currentSongIndex, setCurrentSongIndex, isPlaying, setIsPlaying }) {
       const audioRef = useRef(null);
       const [progress, setProgress] = useState(0);
@@ -447,17 +454,19 @@
         setProgress(newTime);
       };
 
-      const playNext = () => {
+      // Plays Next Random Song
+      const playNextRandom = () => {
         if (songs.length === 0) return;
-        const nextIndex = (currentSongIndex + 1) % songs.length;
-        setCurrentSongIndex(nextIndex);
+        const nextRandomIndex = getRandomSongIndex(currentSongIndex, songs.length);
+        setCurrentSongIndex(nextRandomIndex);
         setIsPlaying(true);
       };
 
-      const playPrev = () => {
+      // Plays Previous Random Song
+      const playPrevRandom = () => {
         if (songs.length === 0) return;
-        const prevIndex = (currentSongIndex - 1 + songs.length) % songs.length;
-        setCurrentSongIndex(prevIndex);
+        const prevRandomIndex = getRandomSongIndex(currentSongIndex, songs.length);
+        setCurrentSongIndex(prevRandomIndex);
         setIsPlaying(true);
       };
 
@@ -474,7 +483,7 @@
             ref={audioRef} 
             src={currentSong.url} 
             onTimeUpdate={handleTimeUpdate}
-            onEnded={playNext}
+            onEnded={playNextRandom} // <--- Plays a random song automatically when track finishes!
             crossOrigin="anonymous"
           />
 
@@ -489,9 +498,14 @@
             </div>
 
             <div className="flex-1 min-w-0 text-left">
-              <span className="text-[10px] font-extrabold tracking-widest text-rose-300 uppercase block mb-1">
-                🎵 Playing Soundarya's Melody
-              </span>
+              <div className="flex items-center justify-between mb-1">
+                <span className="text-[10px] font-extrabold tracking-widest text-rose-300 uppercase block">
+                  🎵 Playing Soundarya's Melody
+                </span>
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-500/30 text-rose-200 border border-rose-400/40 flex items-center gap-1">
+                  <span>🔀</span> Random Play
+                </span>
+              </div>
               <h4 className="font-serif font-bold text-lg md:text-xl text-white truncate drop-shadow-md">{currentSong.title}</h4>
               <p className="text-xs text-rose-200/90 font-medium truncate mt-0.5">{currentSong.artist || 'Curated with Love by Krishna'}</p>
             </div>
@@ -516,9 +530,9 @@
           {/* Upgraded Glossy Control Buttons */}
           <div className="flex items-center justify-center gap-6 mt-4">
             <button 
-              onClick={playPrev} 
+              onClick={playPrevRandom} 
               className="w-10 h-10 rounded-full bg-rose-950/80 border border-rose-500/40 text-rose-200 hover:text-white hover:bg-rose-800 transition-all flex items-center justify-center text-lg shadow-md active:scale-95"
-              title="Previous Track"
+              title="Random Previous Track"
             >
               ⏮️
             </button>
@@ -532,9 +546,9 @@
             </button>
 
             <button 
-              onClick={playNext} 
+              onClick={playNextRandom} 
               className="w-10 h-10 rounded-full bg-rose-950/80 border border-rose-500/40 text-rose-200 hover:text-white hover:bg-rose-800 transition-all flex items-center justify-center text-lg shadow-md active:scale-95"
-              title="Next Track"
+              title="Random Next Track"
             >
               ⏭️
             </button>
@@ -546,7 +560,7 @@
     // MAIN REACT APP PORTAL
     function App() {
       const [isOpened, setIsOpened] = useState(false);
-      const [isPlaying, setIsPlaying] = useState(false); // Global Music Playback State
+      const [isPlaying, setIsPlaying] = useState(false);
       const [activeTab, setActiveTab] = useState('gallery');
       const [selectedPhoto, setSelectedPhoto] = useState(null);
       const [flippedCards, setFlippedCards] = useState({});
@@ -588,7 +602,6 @@
       // HEART SYMBOL LOVE SHOWER CONFETTI TRIGGER
       const triggerLoveShower = () => {
         if (typeof confetti === 'function') {
-          // Center Heart Blast
           confetti({
             particleCount: 70,
             spread: 90,
@@ -598,7 +611,6 @@
             scalar: 1.5
           });
 
-          // Left & Right Heart Cannon Burst
           setTimeout(() => {
             confetti({
               particleCount: 45,
@@ -666,7 +678,7 @@
         return 0;
       };
 
-      // FETCH SONGS FROM GITHUB API
+      // FETCH SONGS FROM GITHUB API (RANDOM INITIAL SONG SELECTION)
       const fetchGitHubSongs = async (repo, folder) => {
         const cleanRepo = repo.trim();
         const cleanFolder = folder.trim().replace(/^\/|\/$/g, '');
@@ -697,8 +709,9 @@
             };
           });
 
+          const randomStartSong = Math.floor(Math.random() * fetchedSongs.length);
           setSongs(fetchedSongs);
-          setCurrentSongIndex(0);
+          setCurrentSongIndex(randomStartSong);
           return fetchedSongs.length;
         }
         return 0;
@@ -755,10 +768,14 @@
         }
       }, []);
 
-      // AUTOMATIC SONG PLAYBACK ON UNWRAP SURPRISE CLICK
+      // AUTOMATIC RANDOM SONG PLAYBACK ON UNWRAP SURPRISE CLICK
       const handleOpenSurprise = () => {
         setIsOpened(true);
-        setIsPlaying(true); // <--- Triggers song playback automatically!
+        if (songs.length > 1) {
+          const randomIdx = Math.floor(Math.random() * songs.length);
+          setCurrentSongIndex(randomIdx);
+        }
+        setIsPlaying(true);
         triggerLoveShower();
       };
 
@@ -856,7 +873,7 @@
                   For My Beloved Soundarya ❤️
                 </h1>
                 <p className="text-rose-200 mb-8 text-sm md:text-base leading-relaxed">
-                  Crafted with all my love by Krishna. Click below to unwrap your surprise and play our song!
+                  Crafted with all my love by Krishna. Click below to unwrap your surprise and play a random song!
                 </p>
                 <button
                   onClick={handleOpenSurprise}
@@ -989,7 +1006,7 @@
                   "In you, Soundarya, Krishna found his best friend, his safest haven, and his favorite person in the whole universe."
                 </p>
 
-                {/* Upgraded Romantic Audio Player with Auto-Play */}
+                {/* Upgraded Romantic Audio Player with Random Shuffle Playback */}
                 <div className="pt-2">
                   <RomanticAudioPlayer 
                     songs={songs} 
@@ -1626,6 +1643,7 @@
               </div>
             )}
 
+总结
             {/* FOOTER */}
             <footer className="glossy-panel border-t border-rose-900/40 py-8 text-center text-xs text-rose-300">
               <p className="font-semibold text-rose-200">Crafted with ❤️ for Soundarya by Krishna</p>
