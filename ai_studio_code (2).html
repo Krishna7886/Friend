@@ -1,0 +1,1634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Soundarya & Krishna ❤️ Romantic Memory Sanctuary</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- React & ReactDOM CDN -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <!-- Babel Standalone CDN -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <!-- Canvas Confetti CDN (Heart Shape Supported) -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <!-- jQuery CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <!-- jQuery Ripples WebGL Plugin CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.ripples/0.5.3/jquery.ripples.min.js"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            rose: {
+              50: '#fff1f2',
+              100: '#ffe4e6',
+              200: '#fecdd3',
+              300: '#fda4af',
+              400: '#fb7185',
+              500: '#f43f5e',
+              600: '#e11d48',
+              700: '#be123c',
+              800: '#9f1239',
+              900: '#881337',
+              950: '#4c0519',
+            },
+            romantic: {
+              gold: '#f59e0b',
+              glow: '#ff80bf',
+              deep: '#1a020b'
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            serif: ['"Playfair Display"', 'serif'],
+            cinzel: ['Cinzel', 'serif'],
+            handwriting: ['Caveat', 'cursive'],
+          },
+          animation: {
+            'float': 'float 4s ease-in-out infinite',
+            'pulse-glow': 'pulseGlow 2.5s ease-in-out infinite',
+            'shimmer': 'shimmer 3s linear infinite',
+            'spin-slow': 'spin 12s linear infinite',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+              '50%': { transform: 'translateY(-12px) rotate(2deg)' },
+            },
+            pulseGlow: {
+              '0%, 100%': { opacity: '0.85', filter: 'drop-shadow(0 0 15px rgba(225, 29, 72, 0.5))' },
+              '50%': { opacity: '1', filter: 'drop-shadow(0 0 30px rgba(244, 63, 94, 0.9))' },
+            },
+            shimmer: {
+              '0%': { backgroundPosition: '-200% 0' },
+              '100%': { backgroundPosition: '200% 0' }
+            }
+          }
+        }
+      }
+    }
+  </script>
+  
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      background-color: #1a020b;
+      color: #fff1f2;
+    }
+    
+    /* jQuery WebGL Water Ripple Background Container */
+    #jquery-water-ripple-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      background-size: cover;
+      background-position: center;
+    }
+
+    /* Floating Petals Canvas Overlay */
+    canvas#petals-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Glossy Glassmorphism UI Effects */
+    .glossy-panel {
+      background: rgba(255, 241, 242, 0.12);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      box-shadow: 0 12px 35px 0 rgba(190, 18, 60, 0.35), inset 0 1px 1px 0 rgba(255, 255, 255, 0.4);
+    }
+
+    .glossy-card {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(254, 205, 211, 0.6);
+      box-shadow: 0 12px 30px -5px rgba(136, 19, 55, 0.2);
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .glossy-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 22px 40px -10px rgba(225, 29, 72, 0.45);
+      z-index: 20;
+    }
+
+    .glossy-btn {
+      background: linear-gradient(135deg, rgba(244, 63, 94, 0.92), rgba(225, 29, 72, 0.98));
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      box-shadow: 0 4px 20px rgba(225, 29, 72, 0.45);
+    }
+
+    .glossy-btn:hover {
+      background: linear-gradient(135deg, rgba(244, 63, 94, 1), rgba(190, 18, 60, 1));
+      box-shadow: 0 6px 28px rgba(244, 63, 94, 0.75);
+    }
+
+    /* 3D Flip Card Utilities */
+    .perspective-1000 { perspective: 1000px; }
+    .transform-style-3d { transform-style: preserve-3d; }
+    .backface-hidden { backface-visibility: hidden; }
+    .rotate-y-180 { transform: rotateY(180deg); }
+
+    /* Custom Romantic Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #2a0211; }
+    ::-webkit-scrollbar-thumb { background: #f43f5e; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #be123c; }
+  </style>
+</head>
+<body class="antialiased selection:bg-rose-500 selection:text-white relative font-sans">
+  
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect, useRef } = React;
+
+    // OFFICIAL JQUERY WATER RIPPLE BACKGROUND COMPONENT WITH MOUSE MOVEMENT RIPPLES
+    function JQueryWaterRipple() {
+      const containerRef = useRef(null);
+
+      useEffect(() => {
+        if (!containerRef.current) return;
+        const $el = window.$(containerRef.current);
+
+        try {
+          if ($el && $el.ripples) {
+            // Initialize jQuery Ripples WebGL plugin
+            $el.ripples({
+              resolution: 512,
+              dropRadius: 22,
+              perturbance: 0.04,
+              interactive: true
+            });
+
+            // Smooth throttled mousemove / touchmove listener for ripples on mouse movement
+            let lastMoveTime = 0;
+
+            const handlePointerMove = (e) => {
+              const now = Date.now();
+              // Trigger ripple every 40ms during mouse movement for continuous liquid flow
+              if (now - lastMoveTime > 40) {
+                lastMoveTime = now;
+                const clientX = e.clientX || (e.touches && e.touches[0] && e.touches[0].clientX);
+                const clientY = e.clientY || (e.touches && e.touches[0] && e.touches[0].clientY);
+                
+                if (clientX !== undefined && clientY !== undefined) {
+                  try {
+                    $el.ripples('drop', clientX, clientY, 14 + Math.random() * 8, 0.02 + Math.random() * 0.015);
+                  } catch (err) {}
+                }
+              }
+            };
+
+            const handlePointerDown = (e) => {
+              const clientX = e.clientX || (e.touches && e.touches[0] && e.touches[0].clientX);
+              const clientY = e.clientY || (e.touches && e.touches[0] && e.touches[0].clientY);
+              if (clientX !== undefined && clientY !== undefined) {
+                try {
+                  $el.ripples('drop', clientX, clientY, 26 + Math.random() * 10, 0.05 + Math.random() * 0.02);
+                } catch (err) {}
+              }
+            };
+
+            // Global event listeners capture mouse movement anywhere on screen
+            window.addEventListener('mousemove', handlePointerMove);
+            window.addEventListener('touchmove', handlePointerMove);
+            window.addEventListener('mousedown', handlePointerDown);
+            window.addEventListener('touchstart', handlePointerDown);
+
+            // Ambient random raindrops in the background water pond
+            const interval = setInterval(() => {
+              if ($el && $el.ripples) {
+                const rx = Math.random() * window.innerWidth;
+                const ry = Math.random() * window.innerHeight;
+                try {
+                  $el.ripples('drop', rx, ry, 18 + Math.random() * 15, 0.025 + Math.random() * 0.02);
+                } catch (e) {}
+              }
+            }, 2200);
+
+            return () => {
+              clearInterval(interval);
+              window.removeEventListener('mousemove', handlePointerMove);
+              window.removeEventListener('touchmove', handlePointerMove);
+              window.removeEventListener('mousedown', handlePointerDown);
+              window.removeEventListener('touchstart', handlePointerDown);
+              try {
+                if ($el && $el.ripples) $el.ripples('destroy');
+              } catch (e) {}
+            };
+          }
+        } catch (err) {
+          console.log('WebGL ripples initialization note:', err);
+        }
+      }, []);
+
+      return (
+        <div 
+          ref={containerRef} 
+          id="jquery-water-ripple-container"
+          style={{
+            backgroundImage: `linear-gradient(135deg, rgba(26,2,11,0.85), rgba(76,5,25,0.75), rgba(24,1,8,0.9)), url("https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=1600&auto=format&fit=crop")`
+          }}
+        />
+      );
+    }
+
+    // FLOATING ROSE PETALS OVERLAY CANVAS
+    function FloatingRosePetals() {
+      const canvasRef = useRef(null);
+
+      useEffect(() => {
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        let animId;
+
+        let width = (canvas.width = window.innerWidth);
+        let height = (canvas.height = window.innerHeight);
+
+        const handleResize = () => {
+          width = canvas.width = window.innerWidth;
+          height = canvas.height = window.innerHeight;
+        };
+        window.addEventListener('resize', handleResize);
+
+        const petals = Array.from({ length: 26 }, () => ({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          size: 8 + Math.random() * 12,
+          speedY: 0.3 + Math.random() * 0.6,
+          speedX: Math.sin(Math.random() * Math.PI) * 0.4,
+          rotation: Math.random() * 360,
+          rotSpeed: (Math.random() - 0.5) * 0.8,
+          opacity: 0.5 + Math.random() * 0.4
+        }));
+
+        let time = 0;
+        const render = () => {
+          time += 0.02;
+          ctx.clearRect(0, 0, width, height);
+
+          petals.forEach((p) => {
+            p.y += p.speedY;
+            p.x += Math.sin(time + p.y * 0.01) * p.speedX;
+            p.rotation += p.rotSpeed;
+
+            if (p.y > height + 20) {
+              p.y = -20;
+              p.x = Math.random() * width;
+            }
+
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate((p.rotation * Math.PI) / 180);
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.bezierCurveTo(-p.size, -p.size, -p.size * 1.5, p.size / 2, 0, p.size * 1.5);
+            ctx.bezierCurveTo(p.size * 1.5, p.size / 2, p.size, -p.size, 0, 0);
+            ctx.fillStyle = `rgba(244, 63, 94, ${p.opacity})`;
+            ctx.shadowColor = 'rgba(190, 18, 60, 0.4)';
+            ctx.shadowBlur = 8;
+            ctx.fill();
+            ctx.restore();
+          });
+
+          animId = requestAnimationFrame(render);
+        };
+
+        render();
+
+        return () => {
+          cancelAnimationFrame(animId);
+          window.removeEventListener('resize', handleResize);
+        };
+      }, []);
+
+      return <canvas ref={canvasRef} id="petals-canvas" />;
+    }
+
+    // DEFAULT ROMANTIC FALLBACK MEMORIES DATASET
+    const DEFAULT_PHOTOS = [
+      {
+        id: 'r1',
+        src: 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=800&auto=format&fit=crop',
+        title: 'Endless Whispers & Smiles',
+        tag: 'Soundarya & Krishna',
+        caption: 'Every single second with you feels like a beautiful romantic daydream.',
+        note: 'Soundarya, remember when we lost track of time talking for hours? You are Krishna’s favorite place to be.',
+        likes: 128
+      },
+      {
+        id: 'r2',
+        src: 'https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?q=80&w=800&auto=format&fit=crop',
+        title: 'Sunset & Hand In Hand',
+        tag: 'Golden Hour',
+        caption: 'Watching twilight colors fade while holding the best person in the world.',
+        note: 'Soundarya, you bring more warmth and bright sunshine into Krishna’s life than a thousand golden sunsets!',
+        likes: 145
+      },
+      {
+        id: 'r3',
+        src: 'https://images.unsplash.com/photo-1522673607200-164d1b6ce486?q=80&w=800&auto=format&fit=crop',
+        title: 'Cozy Coffee Dates',
+        tag: 'Coffee & Love',
+        caption: 'Warm mugs, gentle laughter, and the sweetest company ever.',
+        note: 'Coffee tastes 100x better when shared with Soundarya! Here is to a lifetime of endless dates together.',
+        likes: 98
+      },
+      {
+        id: 'r4',
+        src: 'https://images.unsplash.com/photo-1494774157365-9e04c6720e47?q=80&w=800&auto=format&fit=crop',
+        title: 'Unfiltered Hearty Laughs',
+        tag: 'Pure Joy',
+        caption: 'Your genuine smile has the magical power to heal my soul instantly.',
+        note: 'Never stop laughing your heart out, Soundarya! That smile is Krishna’s most precious treasure.',
+        likes: 182
+      },
+      {
+        id: 'r5',
+        src: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?q=80&w=800&auto=format&fit=crop',
+        title: 'Late Night Adventures',
+        tag: 'Starlit Nights',
+        caption: 'Underneath a sky full of stars, creating unforgettable memories.',
+        note: 'With Soundarya by my side, even simple night walks feel like magical romantic movie scenes.',
+        likes: 164
+      },
+      {
+        id: 'r6',
+        src: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=800&auto=format&fit=crop',
+        title: 'Soundarya & Krishna Forever',
+        tag: 'Soulmates',
+        caption: 'Two hearts beating in sync, bound by pure love and friendship.',
+        note: 'Krishna is so endlessly grateful for you, Soundarya. Thank you for being my constant support and light!',
+        likes: 210
+      }
+    ];
+
+    const REASONS = [
+      { id: 1, title: 'Your Magical Smile, Soundarya', desc: 'Your genuine smile lights up my darkest days and instantly melts all my worries away.' },
+      { id: 2, title: 'Unconditional Comfort', desc: 'Krishna can be 100% his true raw self around you, Soundarya, without any hesitation.' },
+      { id: 3, title: 'Endless Hearty Laughs', desc: 'We share inside jokes that nobody else understands, leading to uncontrollable fits of laughter!' },
+      { id: 4, title: 'Krishna’s Pillar of Strength', desc: 'Whenever life gets tough, Soundarya is always right there standing by my side with warm hugs.' },
+      { id: 5, title: 'Foodie & Coffee Partner', desc: 'From late night snack runs to cute café dates, trying new delicacies with you is sheer bliss.' },
+      { id: 6, title: 'Deep Soulful Conversations', desc: 'We can talk about the cosmos, life dreams, or utter silliness until 3 AM and never run out of words.' },
+      { id: 7, title: 'Your Caring Soul', desc: 'The gentle, thoughtful way you care for Krishna makes me admire you more every single day.' },
+      { id: 8, title: 'My Safe Haven', desc: 'In a noisy and chaotic world, being with Soundarya feels like coming home to pure peace.' },
+      { id: 9, title: 'Unforgettable Adventures', desc: 'Even a simple ride or walking down the street turns into a magical core memory with you.' },
+      { id: 10, title: 'One in a Trillion', desc: 'There is nobody else like Soundarya in this entire universe, and calling you mine is Krishna’s life blessing!' }
+    ];
+
+    // UPGRADED ATTRACTIVE ROMANTIC MUSIC PLAYER COMPONENT
+    function RomanticAudioPlayer({ songs, currentSongIndex, setCurrentSongIndex }) {
+      const audioRef = useRef(null);
+      const [isPlaying, setIsPlaying] = useState(false);
+      const [progress, setProgress] = useState(0);
+      const [duration, setDuration] = useState(0);
+
+      const currentSong = songs[currentSongIndex] || {
+        title: 'Soundarya & Krishna Romantic Theme',
+        artist: 'Acoustic Love Melody',
+        url: 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=romantic-piano-112199.mp3'
+      };
+
+      const togglePlay = () => {
+        if (!audioRef.current) return;
+        if (isPlaying) {
+          audioRef.current.pause();
+          setIsPlaying(false);
+        } else {
+          audioRef.current.play().then(() => setIsPlaying(true)).catch(e => console.log('Playback error:', e));
+        }
+      };
+
+      const handleTimeUpdate = () => {
+        if (!audioRef.current) return;
+        setProgress(audioRef.current.currentTime);
+        setDuration(audioRef.current.duration || 0);
+      };
+
+      const handleSeek = (e) => {
+        if (!audioRef.current) return;
+        const newTime = (e.target.value / 100) * duration;
+        audioRef.current.currentTime = newTime;
+        setProgress(newTime);
+      };
+
+      const playNext = () => {
+        if (songs.length === 0) return;
+        const nextIndex = (currentSongIndex + 1) % songs.length;
+        setCurrentSongIndex(nextIndex);
+        setIsPlaying(true);
+      };
+
+      const playPrev = () => {
+        if (songs.length === 0) return;
+        const prevIndex = (currentSongIndex - 1 + songs.length) % songs.length;
+        setCurrentSongIndex(prevIndex);
+        setIsPlaying(true);
+      };
+
+      useEffect(() => {
+        if (audioRef.current && isPlaying) {
+          audioRef.current.play().catch(e => console.log('Auto play note:', e));
+        }
+      }, [currentSongIndex]);
+
+      const formatTime = (secs) => {
+        if (isNaN(secs)) return '0:00';
+        const mins = Math.floor(secs / 60);
+        const remainder = Math.floor(secs % 60);
+        return `${mins}:${remainder < 10 ? '0' : ''}${remainder}`;
+      };
+
+      return (
+        <div className="glossy-panel rounded-3xl p-5 md:p-7 text-white max-w-xl mx-auto shadow-[0_15px_40px_rgba(244,63,94,0.35)] relative overflow-hidden border border-rose-400/40">
+          <audio 
+            ref={audioRef} 
+            src={currentSong.url} 
+            onTimeUpdate={handleTimeUpdate}
+            onEnded={playNext}
+            crossOrigin="anonymous"
+          />
+
+          <div className="flex items-center gap-5">
+            {/* Spinning Vinyl Record Disc */}
+            <div className="relative w-20 h-20 rounded-full flex-shrink-0 flex items-center justify-center bg-slate-950 shadow-2xl ring-4 ring-rose-500/30">
+              <div className={`w-full h-full rounded-full bg-[radial-gradient(circle,#1a1a1a_30%,#000_70%)] flex items-center justify-center border-4 border-slate-900 ${isPlaying ? 'animate-spin-slow' : ''}`}>
+                <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-rose-500 to-amber-400 flex items-center justify-center text-xs shadow-inner">
+                  💖
+                </div>
+              </div>
+            </div>
+
+            <div className="flex-1 min-w-0 text-left">
+              <span className="text-[10px] font-extrabold tracking-widest text-rose-300 uppercase block mb-1">
+                🎵 Playing Soundarya's Melody
+              </span>
+              <h4 className="font-serif font-bold text-lg md:text-xl text-white truncate drop-shadow-md">{currentSong.title}</h4>
+              <p className="text-xs text-rose-200/90 font-medium truncate mt-0.5">{currentSong.artist || 'Curated with Love by Krishna'}</p>
+            </div>
+          </div>
+
+          {/* Progress Bar */}
+          <div className="mt-5 space-y-1.5">
+            <input 
+              type="range" 
+              min="0" 
+              max="100" 
+              value={duration ? (progress / duration) * 100 : 0} 
+              onChange={handleSeek}
+              className="w-full h-2 bg-rose-950/80 rounded-lg appearance-none cursor-pointer accent-rose-400 shadow-inner"
+            />
+            <div className="flex justify-between text-[11px] text-rose-300 font-bold">
+              <span>{formatTime(progress)}</span>
+              <span>{formatTime(duration)}</span>
+            </div>
+          </div>
+
+          {/* Upgraded Glossy Control Buttons */}
+          <div className="flex items-center justify-center gap-6 mt-4">
+            <button 
+              onClick={playPrev} 
+              className="w-10 h-10 rounded-full bg-rose-950/80 border border-rose-500/40 text-rose-200 hover:text-white hover:bg-rose-800 transition-all flex items-center justify-center text-lg shadow-md active:scale-95"
+              title="Previous Track"
+            >
+              ⏮️
+            </button>
+
+            <button 
+              onClick={togglePlay} 
+              className="w-16 h-16 rounded-full bg-gradient-to-r from-rose-500 via-pink-500 to-amber-400 text-white flex items-center justify-center text-2xl shadow-[0_0_25px_rgba(244,63,94,0.8)] hover:shadow-[0_0_35px_rgba(244,63,94,1)] hover:scale-110 active:scale-95 transition-all duration-300 border-2 border-white/50"
+              title={isPlaying ? "Pause" : "Play"}
+            >
+              {isPlaying ? '⏸️' : '▶️'}
+            </button>
+
+            <button 
+              onClick={playNext} 
+              className="w-10 h-10 rounded-full bg-rose-950/80 border border-rose-500/40 text-rose-200 hover:text-white hover:bg-rose-800 transition-all flex items-center justify-center text-lg shadow-md active:scale-95"
+              title="Next Track"
+            >
+              ⏭️
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    // MAIN REACT APP PORTAL
+    function App() {
+      const [isOpened, setIsOpened] = useState(false);
+      const [activeTab, setActiveTab] = useState('gallery');
+      const [selectedPhoto, setSelectedPhoto] = useState(null);
+      const [flippedCards, setFlippedCards] = useState({});
+
+      // Dynamic GitHub States
+      const [photos, setPhotos] = useState(DEFAULT_PHOTOS);
+      const [songs, setSongs] = useState([]);
+      const [currentSongIndex, setCurrentSongIndex] = useState(0);
+      
+      const [isSyncingGithub, setIsSyncingGithub] = useState(false);
+      const [githubStatus, setGithubStatus] = useState(null);
+      const [isGithubModalOpen, setIsGithubModalOpen] = useState(false);
+      
+      const [githubRepo, setGithubRepo] = useState('');
+      const [photosFolder, setPhotosFolder] = useState('Photos');
+      const [songsFolder, setSongsFolder] = useState('Songs');
+
+      const [likesState, setLikesState] = useState(() => {
+        const initial = {};
+        DEFAULT_PHOTOS.forEach(p => initial[p.id] = p.likes);
+        return initial;
+      });
+
+      // Band Customizer State (Soundarya)
+      const [bandName, setBandName] = useState('Soundarya');
+      const [bandPattern, setBandPattern] = useState('rose');
+      const [bandCharm, setBandCharm] = useState('💖');
+      const [isBandTied, setIsBandTied] = useState(false);
+
+      // Memory Game State
+      const [gameCards, setGameCards] = useState([]);
+      const [flippedGameCards, setFlippedGameCards] = useState([]);
+      const [matchedPairs, setMatchedPairs] = useState([]);
+      const [gameMoves, setGameMoves] = useState(0);
+
+      // Heartfelt Romantic Letter State
+      const [isLetterOpen, setIsLetterOpen] = useState(false);
+
+      // HEART SYMBOL LOVE SHOWER CONFETTI TRIGGER
+      const triggerLoveShower = () => {
+        if (typeof confetti === 'function') {
+          // Center Heart Blast
+          confetti({
+            particleCount: 70,
+            spread: 90,
+            origin: { y: 0.6 },
+            shapes: ['heart'],
+            colors: ['#f43f5e', '#be123c', '#fda4af', '#f59e0b', '#ffffff'],
+            scalar: 1.5
+          });
+
+          // Left & Right Heart Cannon Burst
+          setTimeout(() => {
+            confetti({
+              particleCount: 45,
+              angle: 60,
+              spread: 70,
+              origin: { x: 0.1, y: 0.7 },
+              shapes: ['heart'],
+              colors: ['#f43f5e', '#be123c', '#ff80bf'],
+              scalar: 1.3
+            });
+            confetti({
+              particleCount: 45,
+              angle: 120,
+              spread: 70,
+              origin: { x: 0.9, y: 0.7 },
+              shapes: ['heart'],
+              colors: ['#f43f5e', '#be123c', '#ff80bf'],
+              scalar: 1.3
+            });
+          }, 200);
+        }
+      };
+
+      // FETCH PHOTOS FROM GITHUB API
+      const fetchGitHubPhotos = async (repo, folder) => {
+        const cleanRepo = repo.trim();
+        const cleanFolder = folder.trim().replace(/^\/|\/$/g, '');
+        const apiUrl = `https://api.github.com/repos/${cleanRepo}/contents/${cleanFolder}`;
+
+        const res = await fetch(apiUrl);
+        if (!res.ok) throw new Error(`Folder "${cleanFolder}" not found in ${cleanRepo}`);
+
+        const data = await res.json();
+        if (!Array.isArray(data)) throw new Error(`Path ${cleanFolder} is not a directory.`);
+
+        const validExts = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg'];
+        const imageFiles = data.filter(item => {
+          const ext = item.name.substring(item.name.lastIndexOf('.')).toLowerCase();
+          return validExts.includes(ext);
+        });
+
+        if (imageFiles.length > 0) {
+          const fetchedPhotos = imageFiles.map((file, idx) => {
+            const rawUrl = file.download_url || `https://raw.githubusercontent.com/${cleanRepo}/main/${cleanFolder}/${file.name}`;
+            const titleClean = file.name.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " ");
+            const romanticTitle = titleClean.charAt(0).toUpperCase() + titleClean.slice(1);
+
+            return {
+              id: `gh-img-${idx}-${file.name}`,
+              src: rawUrl,
+              title: romanticTitle || `Soundarya & Krishna Memory #${idx + 1}`,
+              tag: 'Soundarya & Krishna',
+              caption: `A cherished memory captured forever in ${file.name}`,
+              note: `Soundarya, this memory was automatically loaded from Krishna’s GitHub "${cleanFolder}" folder!`,
+              likes: Math.floor(Math.random() * 40) + 50
+            };
+          });
+
+          setPhotos(fetchedPhotos);
+          const newLikes = {};
+          fetchedPhotos.forEach(p => newLikes[p.id] = p.likes);
+          setLikesState(newLikes);
+          return fetchedPhotos.length;
+        }
+        return 0;
+      };
+
+      // FETCH SONGS FROM GITHUB API
+      const fetchGitHubSongs = async (repo, folder) => {
+        const cleanRepo = repo.trim();
+        const cleanFolder = folder.trim().replace(/^\/|\/$/g, '');
+        const apiUrl = `https://api.github.com/repos/${cleanRepo}/contents/${cleanFolder}`;
+
+        const res = await fetch(apiUrl);
+        if (!res.ok) throw new Error(`Songs folder "${cleanFolder}" not found in ${cleanRepo}`);
+
+        const data = await res.json();
+        if (!Array.isArray(data)) return 0;
+
+        const validAudioExts = ['.mp3', '.wav', '.m4a', '.ogg', '.flac'];
+        const audioFiles = data.filter(item => {
+          const ext = item.name.substring(item.name.lastIndexOf('.')).toLowerCase();
+          return validAudioExts.includes(ext);
+        });
+
+        if (audioFiles.length > 0) {
+          const fetchedSongs = audioFiles.map((file, idx) => {
+            const rawUrl = file.download_url || `https://raw.githubusercontent.com/${cleanRepo}/main/${cleanFolder}/${file.name}`;
+            const cleanTitle = file.name.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " ");
+
+            return {
+              id: `gh-song-${idx}`,
+              title: cleanTitle.charAt(0).toUpperCase() + cleanTitle.slice(1),
+              artist: 'For Soundarya, From Krishna',
+              url: rawUrl
+            };
+          });
+
+          setSongs(fetchedSongs);
+          setCurrentSongIndex(0);
+          return fetchedSongs.length;
+        }
+        return 0;
+      };
+
+      // AUTOMATIC GITHUB SYNC ON PAGE LOAD
+      const syncGitHubData = async (repo, pFolder = photosFolder, sFolder = songsFolder) => {
+        if (!repo || !repo.includes('/')) return;
+        setIsSyncingGithub(true);
+        setGithubStatus({ type: 'info', message: 'Syncing Photos and Songs from GitHub...' });
+
+        try {
+          let pCount = 0;
+          let sCount = 0;
+
+          try {
+            pCount = await fetchGitHubPhotos(repo, pFolder);
+          } catch (e) {
+            if (pFolder === 'Photos') pCount = await fetchGitHubPhotos(repo, 'photos');
+          }
+
+          try {
+            sCount = await fetchGitHubSongs(repo, sFolder);
+          } catch (e) {
+            if (sFolder === 'Songs') sCount = await fetchGitHubSongs(repo, 'songs');
+          }
+
+          setGithubStatus({
+            type: 'success',
+            message: `Loaded ${pCount} Photos & ${sCount} Songs live from GitHub!`
+          });
+        } catch (err) {
+          console.log('GitHub sync note:', err.message);
+          setGithubStatus({ type: 'error', message: err.message });
+        } finally {
+          setIsSyncingGithub(false);
+        }
+      };
+
+      useEffect(() => {
+        let repoName = localStorage.getItem('bestie_romantic_repo');
+
+        if (!repoName && window.location.hostname.endsWith('github.io')) {
+          const username = window.location.hostname.split('.')[0];
+          const pathParts = window.location.pathname.split('/').filter(Boolean);
+          if (pathParts.length > 0) {
+            repoName = `${username}/${pathParts[0]}`;
+          }
+        }
+
+        if (repoName) {
+          setGithubRepo(repoName);
+          syncGitHubData(repoName, 'Photos', 'Songs');
+        }
+      }, []);
+
+      const handleOpenSurprise = () => {
+        setIsOpened(true);
+        triggerLoveShower();
+      };
+
+      const handleLikePhoto = (e, id) => {
+        e.stopPropagation();
+        setLikesState(prev => ({ ...prev, [id]: (prev[id] || 0) + 1 }));
+        triggerLoveShower();
+      };
+
+      const toggleFlipCard = (id) => {
+        setFlippedCards(prev => ({ ...prev, [id]: !prev[id] }));
+      };
+
+      // Initialize Memory Game
+      const initGame = () => {
+        const activePhotos = photos.length > 0 ? photos : DEFAULT_PHOTOS;
+        const selected = activePhotos.slice(0, 6);
+        const duplicated = [...selected, ...selected].map((item, idx) => ({
+          ...item,
+          gameId: `${item.id}-${idx}`,
+          uniqueId: idx
+        }));
+        for (let i = duplicated.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [duplicated[i], duplicated[j]] = [duplicated[j], duplicated[i]];
+        }
+        setGameCards(duplicated);
+        setFlippedGameCards([]);
+        setMatchedPairs([]);
+        setGameMoves(0);
+      };
+
+      useEffect(() => {
+        initGame();
+      }, [photos]);
+
+      const handleGameCardClick = (index) => {
+        if (flippedGameCards.length === 2 || flippedGameCards.includes(index) || matchedPairs.includes(index)) return;
+
+        const newFlipped = [...flippedGameCards, index];
+        setFlippedGameCards(newFlipped);
+
+        if (newFlipped.length === 2) {
+          setGameMoves(m => m + 1);
+          const firstCard = gameCards[newFlipped[0]];
+          const secondCard = gameCards[newFlipped[1]];
+
+          if (firstCard.id === secondCard.id) {
+            setMatchedPairs(prev => [...prev, newFlipped[0], newFlipped[1]]);
+            setFlippedGameCards([]);
+            if (matchedPairs.length + 2 === gameCards.length) {
+              setTimeout(() => {
+                triggerLoveShower();
+              }, 400);
+            }
+          } else {
+            setTimeout(() => {
+              setFlippedGameCards([]);
+            }, 1000);
+          }
+        }
+      };
+
+      return (
+        <div className="min-h-screen flex flex-col font-sans relative overflow-x-hidden">
+          
+          {/* jQuery WebGL Water Ripple Background */}
+          <JQueryWaterRipple />
+
+          {/* Floating Rose Petals Overlay */}
+          <FloatingRosePetals />
+
+          {/* GitHub Sync Floating Quick Button */}
+          <div className="fixed bottom-6 right-6 z-50">
+            <button
+              onClick={() => setIsGithubModalOpen(true)}
+              className="flex items-center gap-2 px-4 py-3 bg-rose-900/90 text-white rounded-full shadow-2xl hover:bg-rose-950 transition-all text-xs font-bold border border-rose-500/50 backdrop-blur-md hover:scale-105"
+            >
+              <span className="text-base">📁</span>
+              <span>GitHub Sync ({photos.length} Photos, {songs.length} Songs)</span>
+            </button>
+          </div>
+
+          {/* PERSONALIZED UNBOXING OVERLAY */}
+          {!isOpened && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gradient-to-br from-rose-950 via-romantic-deep to-slate-950 text-white backdrop-blur-xl">
+              <div className="relative text-center max-w-lg mx-auto glossy-panel p-8 md:p-12 rounded-3xl shadow-2xl border border-rose-400/30">
+                <div className="inline-block p-4 bg-rose-500/20 rounded-full mb-6 animate-bounce border border-rose-400/40">
+                  <span className="text-6xl">💌</span>
+                </div>
+                <span className="inline-block px-4 py-1.5 bg-rose-500/30 text-rose-200 font-bold text-xs uppercase tracking-widest rounded-full mb-4 border border-rose-400/30">
+                  Soundarya & Krishna Special
+                </span>
+                <h1 className="text-4xl md:text-5xl font-extrabold font-serif mb-4 leading-tight text-transparent bg-clip-text bg-gradient-to-r from-rose-200 via-rose-100 to-amber-200">
+                  For My Beloved Soundarya ❤️
+                </h1>
+                <p className="text-rose-200 mb-8 text-sm md:text-base leading-relaxed">
+                  Crafted with all my love by Krishna. Step inside to hear our songs, explore our memories, and ripple the water pond!
+                </p>
+                <button
+                  onClick={handleOpenSurprise}
+                  className="w-full sm:w-auto px-8 py-4 glossy-btn text-white font-extrabold text-lg rounded-2xl shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-3 mx-auto"
+                >
+                  <span>Unwrap Soundarya's Surprise</span>
+                  <span className="text-xl">✨</span>
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* MAIN ROMANTIC PORTAL */}
+          <div className={`transition-all duration-700 relative z-10 ${isOpened ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            
+            {/* Header Navbar */}
+            <header className="sticky top-0 z-40 glossy-panel border-b border-rose-500/20 shadow-lg">
+              <div className="max-w-6xl mx-auto px-4 py-3.5 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl animate-spin-slow">💖</span>
+                  <div>
+                    <h1 className="font-serif font-bold text-lg md:text-xl text-rose-100 leading-tight">Soundarya & Krishna</h1>
+                    <p className="text-xs font-semibold text-rose-300">Romantic Memory Sanctuary</p>
+                  </div>
+                </div>
+
+                {/* Nav Tabs */}
+                <nav className="hidden md:flex items-center gap-1 bg-rose-950/60 p-1.5 rounded-2xl text-xs font-bold border border-rose-800/40">
+                  <button
+                    onClick={() => setActiveTab('gallery')}
+                    className={`px-4 py-2 rounded-xl transition-all ${activeTab === 'gallery' ? 'bg-rose-600 text-white shadow-md' : 'text-rose-200 hover:bg-rose-900/50'}`}
+                  >
+                    📸 Memories ({photos.length})
+                  </button>
+                  <button
+                    onClick={() => setActiveTab('reasons')}
+                    className={`px-4 py-2 rounded-xl transition-all ${activeTab === 'reasons' ? 'bg-rose-600 text-white shadow-md' : 'text-rose-200 hover:bg-rose-900/50'}`}
+                  >
+                    💌 10 Reasons
+                  </button>
+                  <button
+                    onClick={() => setActiveTab('playlist')}
+                    className={`px-4 py-2 rounded-xl transition-all ${activeTab === 'playlist' ? 'bg-rose-600 text-white shadow-md' : 'text-rose-200 hover:bg-rose-900/50'}`}
+                  >
+                    🎵 Songs ({songs.length})
+                  </button>
+                  <button
+                    onClick={() => setActiveTab('band')}
+                    className={`px-4 py-2 rounded-xl transition-all ${activeTab === 'band' ? 'bg-rose-600 text-white shadow-md' : 'text-rose-200 hover:bg-rose-900/50'}`}
+                  >
+                    🎀 Love Band
+                  </button>
+                  <button
+                    onClick={() => setActiveTab('game')}
+                    className={`px-4 py-2 rounded-xl transition-all ${activeTab === 'game' ? 'bg-rose-600 text-white shadow-md' : 'text-rose-200 hover:bg-rose-900/50'}`}
+                  >
+                    🎮 Match Game
+                  </button>
+                </nav>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setIsGithubModalOpen(true)}
+                    className="px-3 py-2 bg-rose-900/80 text-rose-100 font-bold text-xs rounded-xl hover:bg-rose-800 transition-all border border-rose-500/40"
+                  >
+                    📁 Sync Repo
+                  </button>
+
+                  {/* HEART SYMBOL LOVE SHOWER BUTTON */}
+                  <button
+                    onClick={triggerLoveShower}
+                    className="px-4 py-2 glossy-btn text-white font-bold text-xs md:text-sm rounded-xl shadow-lg active:scale-95 transition-all flex items-center gap-1.5"
+                  >
+                    <span>Love Shower</span>
+                    <span className="text-base animate-bounce">💖</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Mobile Navigation */}
+              <div className="flex md:hidden overflow-x-auto px-2 py-2 gap-2 border-t border-rose-900/40 bg-rose-950/80 text-xs font-semibold">
+                <button
+                  onClick={() => setActiveTab('gallery')}
+                  className={`px-3 py-1.5 rounded-lg whitespace-nowrap ${activeTab === 'gallery' ? 'bg-rose-600 text-white' : 'text-rose-200 bg-rose-900/40'}`}
+                >
+                  📸 Gallery ({photos.length})
+                </button>
+                <button
+                  onClick={() => setActiveTab('reasons')}
+                  className={`px-3 py-1.5 rounded-lg whitespace-nowrap ${activeTab === 'reasons' ? 'bg-rose-600 text-white' : 'text-rose-200 bg-rose-900/40'}`}
+                >
+                  💌 10 Reasons
+                </button>
+                <button
+                  onClick={() => setActiveTab('playlist')}
+                  className={`px-3 py-1.5 rounded-lg whitespace-nowrap ${activeTab === 'playlist' ? 'bg-rose-600 text-white' : 'text-rose-200 bg-rose-900/40'}`}
+                >
+                  🎵 Songs ({songs.length})
+                </button>
+                <button
+                  onClick={() => setActiveTab('band')}
+                  className={`px-3 py-1.5 rounded-lg whitespace-nowrap ${activeTab === 'band' ? 'bg-rose-600 text-white' : 'text-rose-200 bg-rose-900/40'}`}
+                >
+                  🎀 Love Band
+                </button>
+                <button
+                  onClick={() => setActiveTab('game')}
+                  className={`px-3 py-1.5 rounded-lg whitespace-nowrap ${activeTab === 'game' ? 'bg-rose-600 text-white' : 'text-rose-200 bg-rose-900/40'}`}
+                >
+                  🎮 Mini Game
+                </button>
+              </div>
+            </header>
+
+            {/* HERO SECTION WITH DYNAMIC AUDIO PLAYER */}
+            <section className="relative overflow-hidden py-10 md:py-14 px-4 text-center">
+              <div className="max-w-4xl mx-auto relative z-10 space-y-6">
+                <span className="inline-flex items-center gap-2 px-4 py-1.5 bg-rose-500/20 text-rose-200 rounded-full font-bold text-xs uppercase tracking-wider border border-rose-400/30 shadow-lg">
+                  <span>🌊</span> Interactive jQuery WebGL Water Ripples • Move cursor to ripple the pond!
+                </span>
+
+                <h2 className="text-4xl md:text-6xl font-black font-serif text-white leading-tight">
+                  To My Dearest Soundarya & <br />
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-300 via-pink-300 to-amber-200">
+                    Forever Soulmate ❤️
+                  </span>
+                </h2>
+
+                <p className="text-base md:text-lg text-rose-200/90 max-w-2xl mx-auto font-medium leading-relaxed">
+                  "In you, Soundarya, Krishna found his best friend, his safest haven, and his favorite person in the whole universe."
+                </p>
+
+                {/* Upgraded Romantic Audio Player */}
+                <div className="pt-2">
+                  <RomanticAudioPlayer 
+                    songs={songs} 
+                    currentSongIndex={currentSongIndex}
+                    setCurrentSongIndex={setCurrentSongIndex}
+                  />
+                </div>
+              </div>
+            </section>
+
+            {/* MAIN CONTENT AREA */}
+            <main className="max-w-6xl mx-auto px-4 py-6 pb-24">
+              
+              {/* TAB 1: ROMANTIC PHOTO MEMORIES */}
+              {activeTab === 'gallery' && (
+                <section className="space-y-8 animate-fadeIn">
+                  <div className="text-center max-w-2xl mx-auto">
+                    <h3 className="text-3xl font-bold font-serif text-white">Our Photo Memory Wall 📸</h3>
+                    <p className="text-rose-200/80 mt-2 text-sm">
+                      Synced from Krishna’s GitHub <code className="bg-rose-900/60 text-rose-200 px-2 py-0.5 rounded font-mono">Photos</code> folder! Tap on any polaroid card to flip and read secret notes for Soundarya!
+                    </p>
+                  </div>
+
+                  {/* Polaroid Grid */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 pt-4">
+                    {photos.map((photo, idx) => {
+                      const isFlipped = !!flippedCards[photo.id];
+                      const rotations = ['rotate-1', '-rotate-2', 'rotate-2', '-rotate-1', 'rotate-3', '-rotate-3'];
+                      const rotationClass = rotations[idx % rotations.length];
+
+                      return (
+                        <div key={photo.id} className="perspective-1000">
+                          <div 
+                            className={`glossy-card p-4 rounded-2xl cursor-pointer relative transition-transform duration-500 transform-style-3d ${rotationClass} ${isFlipped ? 'rotate-y-180' : ''}`}
+                            style={{ minHeight: '390px' }}
+                            onClick={() => toggleFlipCard(photo.id)}
+                          >
+                            {/* FRONT */}
+                            <div className={`backface-hidden flex flex-col h-full justify-between ${isFlipped ? 'hidden' : 'block'}`}>
+                              <div className="relative overflow-hidden rounded-xl bg-slate-900 aspect-3/4 mb-4 group shadow-md">
+                                <img 
+                                  src={photo.src} 
+                                  alt={photo.title} 
+                                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                  onError={(e) => {
+                                    e.target.onerror = null;
+                                    e.target.src = 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=800&auto=format&fit=crop';
+                                  }}
+                                />
+                                <span className="absolute top-2 left-2 bg-rose-950/80 backdrop-blur-md text-rose-200 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider border border-rose-500/30">
+                                  {photo.tag}
+                                </span>
+                                
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setSelectedPhoto(photo);
+                                  }}
+                                  className="absolute bottom-2 right-2 bg-white/90 hover:bg-white text-slate-900 p-2 rounded-full shadow-lg text-xs font-bold transition-all"
+                                  title="Zoom Image"
+                                >
+                                  🔍 Zoom
+                                </button>
+                              </div>
+
+                              <div className="px-1 text-slate-800">
+                                <h4 className="font-handwriting text-2xl font-bold leading-tight text-rose-950">
+                                  {photo.title}
+                                </h4>
+                                <p className="text-xs text-slate-600 mt-1 line-clamp-2 font-medium">
+                                  {photo.caption}
+                                </p>
+                              </div>
+
+                              <div className="flex items-center justify-between pt-3 mt-2 border-t border-rose-100 text-xs">
+                                <span className="text-rose-600 font-bold text-[11px]">
+                                  🔄 Tap to Flip Note
+                                </span>
+                                <button
+                                  onClick={(e) => handleLikePhoto(e, photo.id)}
+                                  className="flex items-center gap-1 text-rose-700 bg-rose-100 hover:bg-rose-200 px-3 py-1 rounded-full font-bold transition-colors"
+                                >
+                                  <span>❤️</span>
+                                  <span>{likesState[photo.id] || 0}</span>
+                                </button>
+                              </div>
+                            </div>
+
+                            {/* BACK (SECRET NOTE FOR SOUNDARYA) */}
+                            <div className={`rotate-y-180 backface-hidden absolute inset-0 p-6 flex flex-col justify-between bg-gradient-to-br from-rose-50 via-pink-50 to-amber-50 rounded-2xl border-2 border-dashed border-rose-300 ${!isFlipped ? 'hidden' : 'block'}`}>
+                              <div>
+                                <div className="flex items-center justify-between mb-3 border-b border-rose-200 pb-2">
+                                  <span className="font-bold text-xs uppercase text-rose-800 tracking-wider">Secret Love Note for Soundarya 💌</span>
+                                  <span className="text-lg">✨</span>
+                                </div>
+                                <h5 className="font-serif font-bold text-slate-900 text-lg mb-2">{photo.title}</h5>
+                                <p className="font-handwriting text-2xl text-rose-900 leading-snug">
+                                  "{photo.note}"
+                                </p>
+                              </div>
+
+                              <div className="text-center pt-4 border-t border-rose-200/80">
+                                <span className="text-xs font-bold text-rose-700 bg-white px-3 py-1.5 rounded-full shadow-sm border border-rose-200">
+                                  Tap anywhere to flip back ↩️
+                                </span>
+                              </div>
+                            </div>
+
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </section>
+              )}
+
+              {/* TAB 2: 10 REASONS WHY KRISHNA LOVES SOUNDARYA */}
+              {activeTab === 'reasons' && (
+                <section className="space-y-8 animate-fadeIn max-w-4xl mx-auto">
+                  <div className="text-center max-w-2xl mx-auto">
+                    <span className="text-4xl mb-2 inline-block">💌</span>
+                    <h3 className="text-3xl font-bold font-serif text-white">10 Reasons Soundarya Means The World To Krishna</h3>
+                    <p className="text-rose-200/80 mt-2 text-sm">
+                      Here are 10 special reasons why our bond is irreplaceable and forever cherished!
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {REASONS.map((reason) => (
+                      <div 
+                        key={reason.id}
+                        className="glossy-panel p-6 rounded-2xl shadow-xl border border-rose-400/20 hover:border-rose-400/50 transition-all hover:-translate-y-1 group"
+                      >
+                        <div className="flex items-start gap-4">
+                          <div className="flex-shrink-0 w-10 h-10 rounded-2xl bg-gradient-to-br from-rose-500 to-amber-500 text-white font-extrabold flex items-center justify-center text-base shadow-md group-hover:scale-110 transition-transform">
+                            #{reason.id}
+                          </div>
+                          <div>
+                            <h4 className="font-serif font-bold text-lg text-rose-100 mb-1 group-hover:text-rose-300 transition-colors">
+                              {reason.title}
+                            </h4>
+                            <p className="text-sm text-rose-200/80 leading-relaxed font-medium">
+                              {reason.desc}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="glossy-panel p-8 text-center rounded-3xl shadow-2xl relative overflow-hidden mt-8 border border-rose-400/30">
+                    <h4 className="text-2xl md:text-3xl font-serif font-bold mb-3 text-white">Read Krishna's Letter For Soundarya</h4>
+                    <p className="text-rose-200 mb-6 max-w-md mx-auto text-sm">
+                      Krishna wrote a heart-to-heart romantic letter just for you, Soundarya. Click below to unseal it!
+                    </p>
+                    <button
+                      onClick={() => setIsLetterOpen(true)}
+                      className="px-8 py-3.5 glossy-btn text-white font-bold rounded-2xl shadow-xl hover:scale-105 active:scale-95 transition-all text-sm"
+                    >
+                      ✉️ Unseal Heartfelt Letter
+                    </button>
+                  </div>
+                </section>
+              )}
+
+              {/* TAB 3: SONGS PLAYLIST (`Songs` Folder) */}
+              {activeTab === 'playlist' && (
+                <section className="space-y-8 animate-fadeIn max-w-3xl mx-auto">
+                  <div className="text-center">
+                    <h3 className="text-3xl font-bold font-serif text-white">Soundarya & Krishna Playlist 🎵</h3>
+                    <p className="text-rose-200/80 mt-2 text-sm">
+                      Automatically synced from Krishna’s GitHub <code className="bg-rose-900/60 text-rose-200 px-2 py-0.5 rounded font-mono">Songs</code> folder! Upload your favourite <code className="font-mono">.mp3</code> files there!
+                    </p>
+                  </div>
+
+                  <div className="glossy-panel p-6 rounded-3xl shadow-2xl space-y-4 border border-rose-400/20">
+                    {songs.length === 0 ? (
+                      <div className="text-center py-10 space-y-3">
+                        <span className="text-5xl">🎶</span>
+                        <h4 className="text-lg font-bold text-rose-100">No Custom Songs Loaded Yet</h4>
+                        <p className="text-xs text-rose-200 max-w-md mx-auto">
+                          Create a folder named <code className="bg-rose-900 px-1.5 py-0.5 rounded font-mono text-white">Songs</code> in your GitHub repository and drop your <code className="font-mono">.mp3</code> files in it. They will automatically show up here!
+                        </p>
+                      </div>
+                    ) : (
+                      songs.map((song, idx) => (
+                        <div 
+                          key={song.id}
+                          onClick={() => setCurrentSongIndex(idx)}
+                          className={`p-4 rounded-2xl cursor-pointer transition-all flex items-center justify-between border ${
+                            currentSongIndex === idx 
+                              ? 'bg-rose-600/80 border-rose-400 text-white shadow-lg' 
+                              : 'bg-rose-950/40 border-rose-800/30 text-rose-200 hover:bg-rose-900/40'
+                          }`}
+                        >
+                          <div className="flex items-center gap-3">
+                            <span className="text-xl">{currentSongIndex === idx ? '🎶' : '🎵'}</span>
+                            <div>
+                              <h5 className="font-bold text-sm md:text-base">{song.title}</h5>
+                              <p className="text-xs text-rose-200/70">{song.artist}</p>
+                            </div>
+                          </div>
+
+                          <span className="text-xs font-bold px-3 py-1 rounded-full bg-rose-900/60 border border-rose-500/30">
+                            {currentSongIndex === idx ? 'Playing ▶' : 'Play'}
+                          </span>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </section>
+              )}
+
+              {/* TAB 4: ROMANTIC BAND STUDIO & CERTIFICATE */}
+              {activeTab === 'band' && (
+                <section className="space-y-8 animate-fadeIn max-w-3xl mx-auto">
+                  <div className="text-center">
+                    <h3 className="text-3xl font-bold font-serif text-white">Romantic Love Band Studio 🎀</h3>
+                    <p className="text-rose-200/80 mt-2 text-sm">
+                      Customize a beautiful romantic wristband for Soundarya and tie it onto our Lifetime Award!
+                    </p>
+                  </div>
+
+                  <div className="glossy-panel p-6 md:p-8 rounded-3xl shadow-2xl space-y-6 border border-rose-400/20">
+                    <div className="bg-slate-950/90 rounded-2xl p-8 text-center relative overflow-hidden flex flex-col items-center justify-center min-h-[180px] border border-rose-900/40">
+                      <span className="text-xs font-bold text-amber-300 uppercase tracking-widest mb-3">Live Wristband Preview</span>
+
+                      <div className="relative w-full max-w-sm flex items-center justify-center py-3">
+                        <div className={`h-4 w-full rounded-full shadow-inner transition-all duration-500 ${
+                          bandPattern === 'rose' ? 'bg-gradient-to-r from-rose-400 via-pink-500 to-rose-600' :
+                          bandPattern === 'gold' ? 'bg-gradient-to-r from-amber-300 via-yellow-500 to-amber-600' :
+                          bandPattern === 'teal' ? 'bg-gradient-to-r from-teal-400 via-emerald-500 to-cyan-500' :
+                          'bg-gradient-to-r from-purple-500 via-pink-500 to-rose-500'
+                        }`}></div>
+
+                        <div className="absolute w-12 h-12 bg-white rounded-full shadow-lg border-2 border-amber-400 flex items-center justify-center text-2xl animate-bounce">
+                          {bandCharm}
+                        </div>
+                      </div>
+
+                      <p className="font-handwriting text-2xl text-white mt-4">
+                        For: <span className="text-amber-300">{bandName || 'Soundarya'}</span>
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+                      <div>
+                        <label className="block text-xs font-bold text-rose-200 uppercase mb-2">Soulmate's Name</label>
+                        <input 
+                          type="text" 
+                          value={bandName} 
+                          onChange={(e) => setBandName(e.target.value)}
+                          className="w-full px-4 py-3 rounded-xl bg-rose-950/80 border border-rose-800 text-white font-semibold focus:outline-none focus:ring-2 focus:ring-rose-500"
+                          placeholder="Enter name..."
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-bold text-rose-200 uppercase mb-2">Select Charm Icon</label>
+                        <div className="flex gap-2">
+                          {['💖', '⭐', '👑', '♾️', '💎', '🌸'].map((charm) => (
+                            <button
+                              key={charm}
+                              onClick={() => setBandCharm(charm)}
+                              className={`w-10 h-10 rounded-xl text-xl flex items-center justify-center border transition-all ${
+                                bandCharm === charm ? 'bg-rose-600 text-white border-rose-400 scale-110 shadow-lg' : 'bg-rose-950/40 border-rose-800/40 hover:bg-rose-900/50'
+                              }`}
+                            >
+                              {charm}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="md:col-span-2">
+                        <label className="block text-xs font-bold text-rose-200 uppercase mb-2">Select Wristband Theme</label>
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                          {[
+                            { id: 'rose', label: 'Passionate Rose' },
+                            { id: 'gold', label: 'Golden Love' },
+                            { id: 'teal', label: 'Crystal Lagoon' },
+                            { id: 'purple', label: 'Twilight Dream' }
+                          ].map((p) => (
+                            <button
+                              key={p.id}
+                              onClick={() => setBandPattern(p.id)}
+                              className={`p-3 rounded-xl text-xs font-bold border transition-all ${
+                                bandPattern === p.id ? 'bg-rose-600 text-white border-rose-400 shadow-lg' : 'bg-rose-950/40 text-rose-200 border-rose-800/40 hover:bg-rose-900/50'
+                              }`}
+                            >
+                              {p.label}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={() => {
+                        setIsBandTied(true);
+                        triggerLoveShower();
+                      }}
+                      className="w-full py-4 glossy-btn text-white font-extrabold text-base rounded-2xl shadow-xl hover:scale-102 active:scale-98 transition-all flex items-center justify-center gap-2"
+                    >
+                      <span>🎀 Tie Romantic Band For Soundarya</span>
+                    </button>
+                  </div>
+
+                  {/* OFFICIAL LIFETIME CERTIFICATE */}
+                  <div className="bg-gradient-to-br from-amber-50 via-rose-50 to-pink-50 p-6 md:p-10 rounded-3xl border-8 border-double border-amber-400 shadow-2xl relative text-center text-slate-900 space-y-4">
+                    <span className="text-xs font-black uppercase tracking-widest text-amber-900 bg-amber-200 px-4 py-1 rounded-full">
+                      Official Lifetime Certificate
+                    </span>
+
+                    <h4 className="text-3xl md:text-4xl font-bold font-serif text-slate-900">
+                      Best Soulmate & Best Friend Award
+                    </h4>
+
+                    <p className="text-sm text-slate-600 font-serif italic">This certificate proudly confirms that</p>
+
+                    <p className="text-3xl md:text-4xl font-handwriting font-bold text-rose-700 underline decoration-amber-400 decoration-wavy">
+                      {bandName || 'Soundarya'}
+                    </p>
+
+                    <p className="text-xs md:text-sm text-slate-700 max-w-md mx-auto leading-relaxed font-medium">
+                      Is officially recognized as the most loving, irreplaceable, supportive, and precious soulmate to Krishna forever!
+                    </p>
+
+                    {isBandTied && (
+                      <div className="py-2 animate-bounce">
+                        <span className="inline-block px-4 py-1.5 bg-rose-100 text-rose-800 border border-rose-300 rounded-full font-bold text-xs">
+                          🎀 Friendship Band Tied with {bandCharm} charm!
+                        </span>
+                      </div>
+                    )}
+
+                    <div className="pt-6 flex items-center justify-between border-t border-amber-200 text-xs font-bold text-slate-500">
+                      <div>
+                        <p className="font-serif text-slate-800">Soundarya & Krishna</p>
+                        <p className="text-[10px]">Forever & Always</p>
+                      </div>
+
+                      <div className="w-16 h-16 bg-amber-400/20 rounded-full border-2 border-dashed border-amber-500 flex items-center justify-center text-amber-900 font-serif text-[10px] font-bold rotate-12">
+                        SEAL OF LOVE
+                      </div>
+
+                      <div>
+                        <p className="font-handwriting text-lg text-rose-700">Krishna ❤️</p>
+                        <p className="text-[10px]">Authorized Signature</p>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              )}
+
+              {/* TAB 5: MEMORY MATCH GAME */}
+              {activeTab === 'game' && (
+                <section className="space-y-8 animate-fadeIn max-w-3xl mx-auto">
+                  <div className="text-center">
+                    <h3 className="text-3xl font-bold font-serif text-white">Memory Match Game 🎮</h3>
+                    <p className="text-rose-200/80 mt-2 text-sm">
+                      Soundarya, flip cards and match pairs of our photo memories!
+                    </p>
+                  </div>
+
+                  <div className="flex items-center justify-between glossy-panel p-4 rounded-2xl border border-rose-400/20">
+                    <div>
+                      <span className="text-xs font-bold text-rose-300 uppercase">Moves</span>
+                      <p className="text-xl font-extrabold text-white">{gameMoves}</p>
+                    </div>
+                    <div>
+                      <span className="text-xs font-bold text-rose-300 uppercase">Matched Pairs</span>
+                      <p className="text-xl font-extrabold text-amber-300">{matchedPairs.length / 2} / 6</p>
+                    </div>
+                    <button
+                      onClick={initGame}
+                      className="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-bold text-xs transition-all shadow-md"
+                    >
+                      Restart 🔄
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
+                    {gameCards.map((card, idx) => {
+                      const isFlipped = flippedGameCards.includes(idx) || matchedPairs.includes(idx);
+
+                      return (
+                        <div
+                          key={card.gameId}
+                          onClick={() => handleGameCardClick(idx)}
+                          className={`aspect-square rounded-2xl cursor-pointer transition-all duration-300 transform perspective-1000 ${
+                            isFlipped ? 'scale-100' : 'hover:scale-105 active:scale-95'
+                          }`}
+                        >
+                          <div className={`w-full h-full rounded-2xl shadow-md border-2 transition-transform duration-500 transform-style-3d ${
+                            isFlipped ? 'rotate-y-180 border-rose-400' : 'border-rose-500/40 bg-gradient-to-br from-rose-600 to-amber-500 flex items-center justify-center text-white text-3xl font-bold'
+                          }`}>
+                            {!isFlipped && <span>💖</span>}
+
+                            {isFlipped && (
+                              <div className="absolute inset-0 rounded-2xl overflow-hidden bg-slate-900 p-1">
+                                <img 
+                                  src={card.src} 
+                                  alt="Match Card" 
+                                  className="w-full h-full object-cover rounded-xl"
+                                  onError={(e) => {
+                                    e.target.onerror = null;
+                                    e.target.src = 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=800&auto=format&fit=crop';
+                                  }}
+                                />
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {matchedPairs.length === gameCards.length && gameCards.length > 0 && (
+                    <div className="bg-emerald-600 text-white p-6 rounded-3xl shadow-xl text-center animate-bounce">
+                      <h4 className="text-2xl font-bold font-serif mb-1">Soundarya Matched All Memories! 🎉</h4>
+                      <p className="text-sm text-emerald-100">Completed in {gameMoves} moves. You know our moments by heart!</p>
+                    </div>
+                  )}
+                </section>
+              )}
+
+            </main>
+
+            {/* GITHUB SYNC MODAL */}
+            {isGithubModalOpen && (
+              <div 
+                className="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 animate-fadeIn"
+                onClick={() => setIsGithubModalOpen(false)}
+              >
+                <div 
+                  className="bg-slate-900 text-white rounded-3xl p-6 md:p-8 max-w-lg w-full shadow-2xl relative border border-rose-500/30"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <button
+                    onClick={() => setIsGithubModalOpen(false)}
+                    className="absolute top-4 right-4 bg-rose-950 text-rose-300 hover:text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm border border-rose-800"
+                  >
+                    ✕
+                  </button>
+
+                  <div className="flex items-center gap-3 mb-4">
+                    <span className="text-3xl">📁</span>
+                    <div>
+                      <h4 className="text-xl font-bold font-serif text-white">GitHub Folders Auto-Sync</h4>
+                      <p className="text-xs text-rose-300">Automatically load photos from <code className="font-mono text-white">Photos</code> & songs from <code className="font-mono text-white">Songs</code>!</p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-3 text-xs text-rose-200 bg-rose-950/60 p-4 rounded-2xl border border-rose-800/40">
+                    <p className="font-bold text-white">How Krishna can upload files on GitHub:</p>
+                    <ol className="list-decimal list-inside space-y-1">
+                      <li>Create folder <code className="bg-rose-900 px-1 py-0.5 rounded font-mono text-white">Photos</code> and upload your images (<code className="font-mono">.jpg, .png</code>).</li>
+                      <li>Create folder <code className="bg-rose-900 px-1 py-0.5 rounded font-mono text-white">Songs</code> and upload your music (<code className="font-mono">.mp3, .wav</code>).</li>
+                      <li>Enter your repository name below and click <strong>Sync Repository</strong>!</li>
+                    </ol>
+                  </div>
+
+                  <div className="space-y-4 mt-4">
+                    <div>
+                      <label className="block text-xs font-bold uppercase text-rose-300 mb-1">GitHub Repo (username/repository)</label>
+                      <input 
+                        type="text" 
+                        value={githubRepo}
+                        onChange={(e) => setGithubRepo(e.target.value)}
+                        placeholder="e.g. username/my-friendship-site"
+                        className="w-full px-4 py-3 rounded-xl bg-slate-950 border border-rose-800 focus:ring-2 focus:ring-rose-500 text-white font-semibold text-sm"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-[11px] font-bold uppercase text-rose-300 mb-1">Photos Folder</label>
+                        <input 
+                          type="text" 
+                          value={photosFolder}
+                          onChange={(e) => setPhotosFolder(e.target.value)}
+                          className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-rose-800 text-white text-xs font-mono"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[11px] font-bold uppercase text-rose-300 mb-1">Songs Folder</label>
+                        <input 
+                          type="text" 
+                          value={songsFolder}
+                          onChange={(e) => setSongsFolder(e.target.value)}
+                          className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-rose-800 text-white text-xs font-mono"
+                        />
+                      </div>
+                    </div>
+
+                    {githubStatus && (
+                      <div className={`p-3 rounded-xl text-xs font-bold ${
+                        githubStatus.type === 'error' ? 'bg-rose-950 text-rose-200 border border-rose-800' :
+                        githubStatus.type === 'success' ? 'bg-emerald-950 text-emerald-200 border border-emerald-800' :
+                        'bg-sky-950 text-sky-200 border border-sky-800'
+                      }`}>
+                        {githubStatus.message}
+                      </div>
+                    )}
+
+                    <div className="flex gap-3 pt-2">
+                      <button
+                        onClick={() => {
+                          localStorage.setItem('bestie_romantic_repo', githubRepo);
+                          syncGitHubData(githubRepo, photosFolder, songsFolder);
+                        }}
+                        disabled={isSyncingGithub}
+                        className="flex-1 py-3 glossy-btn text-white font-bold rounded-xl shadow-lg transition-all text-xs flex items-center justify-center gap-2"
+                      >
+                        {isSyncingGithub ? <span>Syncing... ⏳</span> : <span>⚡ Sync Repository</span>}
+                      </button>
+
+                      <button
+                        onClick={() => {
+                          setPhotos(DEFAULT_PHOTOS);
+                          setSongs([]);
+                          setGithubStatus({ type: 'info', message: 'Reset to fallback dataset.' });
+                        }}
+                        className="px-4 py-3 bg-rose-950 text-rose-200 font-bold rounded-xl text-xs hover:bg-rose-900"
+                      >
+                        Reset
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* LIGHTBOX MODAL */}
+            {selectedPhoto && (
+              <div 
+                className="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 animate-fadeIn"
+                onClick={() => setSelectedPhoto(null)}
+              >
+                <div 
+                  className="bg-slate-900 rounded-3xl overflow-hidden max-w-2xl w-full shadow-2xl relative border border-rose-500/30"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <button
+                    onClick={() => setSelectedPhoto(null)}
+                    className="absolute top-4 right-4 bg-slate-950/80 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg z-10 hover:bg-slate-950"
+                  >
+                    ✕
+                  </button>
+
+                  <div className="max-h-[65vh] bg-black flex items-center justify-center overflow-hidden">
+                    <img 
+                      src={selectedPhoto.src} 
+                      alt={selectedPhoto.title}
+                      className="w-full h-full object-contain max-h-[65vh]"
+                    />
+                  </div>
+
+                  <div className="p-6 text-white">
+                    <span className="inline-block px-3 py-1 bg-rose-900 text-rose-200 rounded-full text-xs font-bold uppercase tracking-wider mb-2 border border-rose-700">
+                      {selectedPhoto.tag}
+                    </span>
+                    <h4 className="text-2xl font-bold font-serif text-white mb-2">{selectedPhoto.title}</h4>
+                    <p className="text-sm text-rose-200/80 mb-4">{selectedPhoto.caption}</p>
+
+                    <div className="p-4 bg-rose-950/60 rounded-2xl border border-rose-800">
+                      <p className="font-handwriting text-2xl text-rose-200">
+                        "{selectedPhoto.note}"
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* HEARTFELT LETTER MODAL */}
+            {isLetterOpen && (
+              <div 
+                className="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 animate-fadeIn"
+                onClick={() => setIsLetterOpen(false)}
+              >
+                <div 
+                  className="bg-gradient-to-br from-amber-50 via-rose-50 to-pink-50 rounded-3xl p-6 md:p-10 max-w-xl w-full shadow-2xl border-4 border-rose-400 relative text-slate-900"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <button
+                    onClick={() => setIsLetterOpen(false)}
+                    className="absolute top-4 right-4 text-slate-400 hover:text-slate-700 text-xl font-bold"
+                  >
+                    ✕
+                  </button>
+
+                  <div className="text-center mb-6">
+                    <span className="text-4xl">💌</span>
+                    <h4 className="text-2xl font-bold font-serif text-rose-900 mt-2">To My Dearest Soundarya</h4>
+                    <p className="text-xs font-semibold text-rose-600">From Krishna, With All My Heart</p>
+                  </div>
+
+                  <div className="space-y-4 font-handwriting text-2xl text-slate-800 leading-snug max-h-[50vh] overflow-y-auto pr-2">
+                    <p>My Dearest Soundarya,</p>
+                    <p>
+                      Looking at all these pictures and listening to our songs brings a warm, glowing smile to my face. Having you in my life as my best friend and soulmate is the greatest blessing I could ever ask for.
+                    </p>
+                    <p>
+                      Thank you for your infinite patience, your sweet laughter, and for being the safest, most comforting presence in Krishna’s world.
+                    </p>
+                    <p>
+                      Here’s to making a trillion more memories together, listening to our favorite songs, and staying by each other's side forever!
+                    </p>
+                    <p className="text-right text-rose-700 pt-2 font-bold">
+                      With all my love, ❤️<br />
+                      Krishna
+                    </p>
+                  </div>
+
+                  <div className="mt-8 text-center">
+                    <button
+                      onClick={() => {
+                        setIsLetterOpen(false);
+                        triggerLoveShower();
+                      }}
+                      className="px-6 py-3 glossy-btn text-white font-bold rounded-xl shadow-lg hover:scale-105 active:scale-95 transition-all text-sm"
+                    >
+                      💖 Send Hug Back to Krishna
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* FOOTER */}
+            <footer className="glossy-panel border-t border-rose-900/40 py-8 text-center text-xs text-rose-300">
+              <p className="font-semibold text-rose-200">Crafted with ❤️ for Soundarya by Krishna</p>
+              <p className="mt-1 text-rose-400/80">Forever & Always Beyond Words ✨</p>
+            </footer>
+
+          </div>
+        </div>
+      );
+    }
+
+    // Render React Root
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
